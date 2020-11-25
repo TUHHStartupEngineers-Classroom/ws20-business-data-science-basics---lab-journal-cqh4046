@@ -18,8 +18,6 @@ rmarkdown::render_site(encoding = 'UTF-8')
 system( paste0("staticrypt ./docs/journal.html ", Sys.getenv("LAB_KEY")))
 
 
-Sys.getenv("LAB_KEY")
-
 # Remove and rename resulting files
 file.remove("./docs/journal.html")
 file.rename(from = "./docs/journal_encrypted.html", 
