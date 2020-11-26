@@ -1,5 +1,8 @@
 #Challenge 1
 
+library(tidyverse)
+library(readxl)
+
 bikes_tbl <- read_excel(path = "DS_101/00_data/01_bike_sales/01_raw_data/bikes.xlsx")
 orderlines_tbl <-read_excel("DS_101/00_data/01_bike_sales/01_raw_data/orderlines.xlsx")
 bikeshops_tbl <-read_excel("DS_101/00_data/01_bike_sales/01_raw_data/bikeshops.xlsx")
