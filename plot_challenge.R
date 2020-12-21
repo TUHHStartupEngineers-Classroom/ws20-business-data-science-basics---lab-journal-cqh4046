@@ -8,7 +8,7 @@ covid_data_dt <- fread(url)
 class(covid_data_dt)
 
 covid_tbl <- covid_data_dt %>%
-  select(dateRep, cases, month,countriesAndTerritories, "Cumulative_number_for_14_days_of_COVID-19_cases_per_100000") %>%
+  select(dateRep, cases_weekly,countriesAndTerritories) %>%
   filter(countriesAndTerritories == 'Germany' | 
            countriesAndTerritories == 'United_Kingdom' | 
            countriesAndTerritories == 'Spain' | 
@@ -17,7 +17,7 @@ covid_tbl <- covid_data_dt %>%
   group_by(countriesAndTerritories) %>%
     mutate(date       = lubridate::dmy(dateRep)) %>%
     arrange(date) %>%
-    mutate(cumsum = cumsum(cases))
+    mutate(cumsum = cumsum(cases_weekly))
 
 max_value <-covid_tbl %>%
   select(cumsum) %>%
@@ -39,10 +39,10 @@ value <- max_value[1, "cumsum"]
                                                      suffix =  "M Cases"))+
    labs(
      title = "Cumulative Covid-19 cases",
-     subtitle = "sorted by C[o]untrys",
+     subtitle = "sorted by Countrys",
      x = "Date (DDMMYYYY)",
      y = "Cumulative Cases",
-     caption = str_glue("#Murika FIRST\nsuper sad story to be true")
+     caption = str_glue("Amerika is going through a hard time")
    )+
    theme(
      legend.position = "bottom",
@@ -59,7 +59,7 @@ value <- max_value[1, "cumsum"]
  world <- map_data("world") 
  
  covid_death_tbl <- covid_data_dt %>%
-   select(countriesAndTerritories, geoId, popData2019, deaths) %>% 
+   select(countriesAndTerritories, geoId, popData2019, deaths_weekly) %>% 
    mutate(across(countriesAndTerritories, str_replace_all, "_", " ")) %>%
    mutate(countriesAndTerritories = case_when(
      
@@ -70,7 +70,7 @@ value <- max_value[1, "cumsum"]
      
    ))  %>%
    group_by(countriesAndTerritories) %>%
-   summarise(total_death = sum (deaths), popData2019)%>%
+   summarise(total_death = sum (deaths_weekly), popData2019)%>%
    unique()%>%
    mutate(mortality_rate = total_death/popData2019) %>%
    merge(y=world, by.x = "countriesAndTerritories", by.y = "region")

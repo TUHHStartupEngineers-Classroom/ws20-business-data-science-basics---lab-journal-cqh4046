@@ -95,9 +95,6 @@ state_sale_tbl <- sales_by_state_tbl %>%
                                      decimal.mark = ",", 
                                      prefix = "", 
                                      suffix = " €"))
-
-
-
 ##plot
 
 state_sale_tbl %>%
@@ -122,4 +119,43 @@ state_sale_tbl %>%
     x = "", # Override defaults for x and y
     y = "Revenue"
   )+ 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Sales by location and year
+
+sales_by_state_year_tbl <- bike_orderlines_wrangled_tbl %>%
+  select(order_date,total_price, location) %>%
+  separate(col="location",
+           into = c("city", "state"),
+           sep =", ",
+           convert =T) %>%
+  mutate(year=year(order_date))%>%
+  group_by(state, year) %>%
+  select(year,total_price, state) %>%
+  summarize(state_sale = sum(total_price))
+  
+  
+  sales_by_state_year_tbl %>%
+  
+  # Set up x, y, fill
+  ggplot(aes(x = year, y = state_sale, fill = state)) +
+  
+  # Geometries
+  geom_col() + # Run up to here to get a stacked bar plot
+  
+  # Facet
+  facet_wrap(~ state) +
+  
+  # Formatting
+  scale_y_continuous(labels = scales::dollar_format(big.mark = ".", 
+                                                    decimal.mark = ",", 
+                                                    prefix = "", 
+                                                    suffix = " €")) +
+  labs(
+    title = "Sales by location and year",
+    subtitle = "12 locations and 5 years",
+    fill = "Region" # Changes the legend name
+  )+ 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+    theme(legend.position = "none")
+  

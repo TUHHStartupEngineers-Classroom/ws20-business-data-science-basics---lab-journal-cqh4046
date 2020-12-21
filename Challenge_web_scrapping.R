@@ -29,7 +29,8 @@ bike_price_tbl <- html_mtb %>%
   as_tibble() %>% 
   rename(name=value)
 
-full_tibble <- bind_cols(bike_names_tbl, bike_price_tbl)  
+full_tibble <- bind_cols(bike_names_tbl, bike_price_tbl) %>%
+  rename(bike=name...1, price = name...2)
  
 
 
