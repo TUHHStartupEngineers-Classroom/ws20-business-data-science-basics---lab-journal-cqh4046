@@ -36,3 +36,11 @@ vignettes/*.pdf
 *.knit.md
 
 # R Environment Variables
+patent.tsv
+patent_assignee.tsv
+assignee.tsv
+docs/loan_data/Performance_2019Q1.txt
+docs/uspc.tsv
+loan_data/Performance_2019Q1.txt
+loan_data/Acquisition_2019Q1.txt
+uspc.tsv
